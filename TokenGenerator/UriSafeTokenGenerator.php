@@ -58,7 +58,7 @@ class UriSafeTokenGenerator implements TokenGeneratorInterface
         // Generate an URI safe base64 encoded string that does not contain "+",
         // "/" or "=" which need to be URL encoded and make URLs unnecessarily
         // longer.
-        $bytes = $this->random->nextBytes($this->entropy / 8);
+        $bytes = $this->random->nextBytes(intval(ceil($this->entropy / 8)));
 
         return rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');
     }
