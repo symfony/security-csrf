@@ -227,9 +227,21 @@ final class SameOriginCsrfTokenManager implements CsrfTokenManagerInterface
      */
     private function isValidOrigin(Request $request): ?bool
     {
-        $source = $request->headers->get('Origin') ?? $request->headers->get('Referer') ?? 'null';
+        $target = $request->getSchemeAndHttpHost().'/';
+        $source = 'null';
 
-        return 'null' === $source ? null : str_starts_with($source.'/', $request->getSchemeAndHttpHost().'/');
+        foreach (['Origin', 'Referer'] as $header) {
+            if (!$request->headers->has($header)) {
+                continue;
+            }
+            $source = $request->headers->get($header);
+
+            if (str_starts_with($source.'/', $target)) {
+                return true;
+            }
+        }
+
+        return 'null' === $source ? null : false;
     }
 
     /**

@@ -100,6 +100,20 @@ class SameOriginCsrfTokenManagerTest extends TestCase
         $this->assertSame(1 << 8, $request->attributes->get('csrf-token'));
     }
 
+    public function testValidRefererInvalidOrigin()
+    {
+        $request = new Request();
+        $request->headers->set('Origin', 'http://localhost:1234');
+        $request->headers->set('Referer', $request->getSchemeAndHttpHost());
+        $this->requestStack->push($request);
+
+        $token = new CsrfToken('test_token', str_repeat('a', 24));
+
+        $this->logger->expects($this->once())->method('debug')->with('CSRF validation accepted using origin info.');
+        $this->assertTrue($this->csrfTokenManager->isTokenValid($token));
+        $this->assertSame(1 << 8, $request->attributes->get('csrf-token'));
+    }
+
     public function testValidOriginAfterDoubleSubmit()
     {
         $session = $this->createMock(Session::class);
