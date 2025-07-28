@@ -22,7 +22,7 @@ class UriSafeTokenGeneratorTest extends TestCase
     private const ENTROPY = 1000;
 
     /**
-     * A non alpha-numeric byte string.
+     * A non alphanumeric byte string.
      */
     private static string $bytes;
 
