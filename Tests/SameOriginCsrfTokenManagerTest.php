@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Security\Csrf\Tests;
 
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,11 +181,9 @@ class SameOriginCsrfTokenManagerTest extends TestCase
         $this->assertFalse($csrfTokenManager->isTokenValid(new CsrfToken('test_token', str_repeat('b', 24))));
     }
 
-    /**
-     * @testWith [0]
-     *           [1]
-     *           [2]
-     */
+    #[TestWith([0])]
+    #[TestWith([1])]
+    #[TestWith([2])]
     public function testValidOriginMissingDoubleSubmit(int $checkHeader)
     {
         $csrfTokenManager = new SameOriginCsrfTokenManager($this->requestStack, $this->logger, null, [], $checkHeader);
