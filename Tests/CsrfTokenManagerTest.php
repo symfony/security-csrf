@@ -519,7 +519,7 @@ class CsrfTokenManagerTest extends TestCase
     {
         [$generator, $storage] = $this->getGeneratorAndStorage();
 
-        return ['generated-', new CsrfTokenManager($generator, $storage, fn () => 'generated-'), $storage, $generator];
+        return ['generated-', new CsrfTokenManager($generator, $storage, static fn () => 'generated-'), $storage, $generator];
     }
 
     private function getRequestStackWithEmptyNamespaceMocks(): array
