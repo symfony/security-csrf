@@ -182,7 +182,7 @@ final class SameOriginCsrfTokenManager implements CsrfTokenManagerInterface
 
         if (1 & $csrfProtection) {
             // Persist valid origin for both safe and non-safe requests
-            $previousCsrfProtection |= 1 & (1 << 8);
+            $previousCsrfProtection |= 1 | (1 << 8);
         }
 
         $request->attributes->set($this->cookieName, ($csrfProtection << $shift) | $previousCsrfProtection);
