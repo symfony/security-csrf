@@ -126,12 +126,15 @@ class SameOriginCsrfTokenManagerTest extends TestCase
     {
         $request = new Request();
         $request->headers->set('Sec-Fetch-Site', 'same-origin');
-        $this->requestStack->push($request);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+        $logger = $this->createMock(LoggerInterface::class);
+        $csrfTokenManager = new SameOriginCsrfTokenManager($requestStack, $logger);
 
         $token = new CsrfToken('test_token', str_repeat('a', 24));
 
-        $this->logger->expects($this->once())->method('debug')->with('CSRF validation accepted using origin info.');
-        $this->assertTrue($this->csrfTokenManager->isTokenValid($token));
+        $logger->expects($this->once())->method('debug')->with('CSRF validation accepted using origin info.');
+        $this->assertTrue($csrfTokenManager->isTokenValid($token));
         $this->assertSame(1 | (1 << 8), $request->attributes->get('csrf-token'));
     }
 
@@ -139,12 +142,15 @@ class SameOriginCsrfTokenManagerTest extends TestCase
     {
         $request = new Request();
         $request->headers->set('Sec-Fetch-Site', 'cross-site');
-        $this->requestStack->push($request);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+        $logger = $this->createMock(LoggerInterface::class);
+        $csrfTokenManager = new SameOriginCsrfTokenManager($requestStack, $logger);
 
         $token = new CsrfToken('test_token', str_repeat('a', 24));
 
-        $this->logger->expects($this->once())->method('warning')->with('CSRF validation failed: origin info doesn\'t match.');
-        $this->assertFalse($this->csrfTokenManager->isTokenValid($token));
+        $logger->expects($this->once())->method('warning')->with('CSRF validation failed: origin info doesn\'t match.');
+        $this->assertFalse($csrfTokenManager->isTokenValid($token));
     }
 
     public function testValidOriginAfterDoubleSubmit()
