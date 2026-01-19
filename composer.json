@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": ">=8.4",
+        "symfony/deprecation-contracts": "^2.5|^3",
         "symfony/security-core": "^7.4|^8.0"
     },
     "require-dev": {

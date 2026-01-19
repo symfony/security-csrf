@@ -190,8 +190,13 @@ final class SameOriginCsrfTokenManager implements CsrfTokenManagerInterface
         return true;
     }
 
+    /**
+     * @deprecated since Symfony 8.1, logic is handled by SameOriginCsrfListener.
+     */
     public function clearCookies(Request $request, Response $response): void
     {
+        trigger_deprecation('symfony/security-csrf', '8.1', 'The "%s()" method is deprecated and will be removed in 9.0, use "%s::clearCookies()" instead.', __METHOD__, SameOriginCsrfListener::class);
+
         if (!$request->attributes->has($this->cookieName)) {
             return;
         }
@@ -205,8 +210,13 @@ final class SameOriginCsrfTokenManager implements CsrfTokenManagerInterface
         }
     }
 
+    /**
+     * @deprecated since Symfony 8.1, logic is handled by SameOriginCsrfListener.
+     */
     public function persistStrategy(Request $request): void
     {
+        trigger_deprecation('symfony/security-csrf', '8.1', 'The "%s()" method is deprecated and will be removed in 9.0, use "%s::persistStrategy()" instead.', __METHOD__, SameOriginCsrfListener::class);
+
         if (!$request->attributes->has($this->cookieName)
             || !$request->hasSession(true)
             || !($session = $request->getSession())->isStarted()
@@ -220,8 +230,13 @@ final class SameOriginCsrfTokenManager implements CsrfTokenManagerInterface
         $usageIndexReference = $usageIndexValue;
     }
 
+    /**
+     * @deprecated since Symfony 8.1, logic is handled by SameOriginCsrfListener.
+     */
     public function onKernelResponse(ResponseEvent $event): void
     {
+        trigger_deprecation('symfony/security-csrf', '8.1', 'The "%s()" method is deprecated and will be removed in 9.0, use "%s::onKernelResponse()" instead.', __METHOD__, SameOriginCsrfListener::class);
+
         if (!$event->isMainRequest()) {
             return;
         }
