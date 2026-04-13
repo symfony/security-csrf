@@ -674,7 +674,7 @@ class CsrfTokenManagerTest extends TestCase
 
     private function getClosureMocks(TokenGeneratorInterface $generator, TokenStorageInterface $storage): CsrfTokenManager
     {
-        return new CsrfTokenManager($generator, $storage, fn () => 'generated-');
+        return new CsrfTokenManager($generator, $storage, static fn () => 'generated-');
     }
 
     private function getRequestStackWithEmptyNamespaceMocks(TokenGeneratorInterface $generator, TokenStorageInterface $storage): CsrfTokenManager
